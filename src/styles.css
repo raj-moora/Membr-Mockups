@@ -934,6 +934,20 @@ button {
   filter: brightness(0.92);
 }
 
+.hp-pass-btn__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: block;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
 .hp-pass-btn__label {
   font-size: 15px;
   letter-spacing: -0.23px;

@@ -12,6 +12,7 @@ import cellularConnection from '../../assets/cellular_connection.svg';
 import wifi from '../../assets/wifi.svg';
 import battery from '../../assets/battery.svg';
 import iphoneBevel from '../../assets/iphone-bevel.svg';
+import qrScan from '../../assets/qr_scan.svg';
 
 // ─── Day picker strip ──────────────────────────────────────────────────────────
 
@@ -174,13 +175,11 @@ export function HomepageScreen({ mode }: HomepageScreenProps) {
         <img src={iphoneBevel} alt="" className="hp-pass-bevel" />
         <div className="hp-pass-bar">
           <button className="hp-pass-btn" aria-label="Show pass">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="var(--hp-text-on-brand, #eee7fe)">
-              <rect x="3" y="3" width="16" height="16" rx="2" stroke="var(--hp-text-on-brand, #eee7fe)" strokeWidth="1.5" fill="none" />
-              <rect x="6" y="6" width="4" height="4" fill="var(--hp-text-on-brand, #eee7fe)" />
-              <rect x="12" y="6" width="4" height="4" fill="var(--hp-text-on-brand, #eee7fe)" />
-              <rect x="6" y="12" width="4" height="4" fill="var(--hp-text-on-brand, #eee7fe)" />
-              <rect x="12" y="12" width="4" height="4" fill="var(--hp-text-on-brand, #eee7fe)" />
-            </svg>
+            <span
+              className="hp-pass-btn__icon"
+              style={{ maskImage: `url(${qrScan})`, WebkitMaskImage: `url(${qrScan})` }}
+              aria-hidden
+            />
             <span className="hp-pass-btn__label">Show pass</span>
           </button>
         </div>
