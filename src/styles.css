@@ -563,10 +563,11 @@ button {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 32px 16px 8px;
+  padding: 0 16px 8px;
 }
 
 .hp-nav__title {
+  padding-top: 50px;
   font-size: 34px;
   font-weight: 700;
   color: var(--hp-label-primary);
@@ -586,6 +587,7 @@ button {
 .hp-avatar-img {
   width: 100%;
   height: 100%;
+  margin-top: 0;
   background-color: var(--hp-gray-5);
   border-radius: 50%;
   display: flex;
@@ -613,7 +615,7 @@ button {
   overflow-x: hidden;
   position: relative;
   z-index: 2;
-  padding: 24px 20px 0;
+  padding: 24px 16px 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -688,9 +690,10 @@ button {
 }
 
 .next-class-card__divider {
+  width: 100%;
   height: 0.33px;
   background: var(--hp-separator);
-  margin: 0 -22px;
+  margin: 0;
 }
 
 .next-class-card__body {
@@ -783,7 +786,7 @@ button {
 .waiting-card__class {
   font-size: 17px;
   color: var(--hp-label-primary);
-  letter-spacing: -0.43px;
+  letter-spacing: -0.1px;
 }
 
 .waiting-card__time {
@@ -904,7 +907,9 @@ button {
 .hp-pass-bevel {
   display: block;
   width: 100%;
-  height: auto;
+  height: 68px;
+  margin-top: -1px;
+  margin-bottom: -1px;
   flex-shrink: 0;
 }
 
