@@ -403,6 +403,10 @@ button {
   transform-origin: top center;
 }
 
+.iphone-frame--splash .iphone-screen-content {
+  height: 811px;
+}
+
 .iphone-frame-overlay {
   position: absolute;
   inset: 0;
@@ -957,4 +961,228 @@ button {
   font-size: 15px;
   letter-spacing: -0.23px;
   color: var(--hp-text-on-brand, #eee7fe);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Splash screen — sp-* namespace (Figma 4069:6281)
+───────────────────────────────────────────────────────────────────────────── */
+.sp-screen {
+  --sp-surface: #ffffff;
+  --sp-label-primary: #ffffff;
+  --sp-label-secondary: rgba(60, 60, 67, 0.6);
+  --sp-brand-bg: var(--brand-bg-light);
+  --sp-text-on-brand: var(--text-on-brand-light);
+
+  /* Fills iPhone screen cutout (375 × 810, aligned like homepage) */
+  width: 375px;
+  height: 810px;
+  margin: 0 0 0 9px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-screen--dark {
+  --sp-surface: #1c1c1e;
+  --sp-label-secondary: rgba(235, 235, 245, 0.6);
+  --sp-brand-bg: var(--brand-bg-dark);
+  --sp-text-on-brand: var(--text-on-brand-dark);
+}
+
+/* Background layers */
+.sp-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.sp-bg__fallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--sp-brand-bg) 85%, #1a0538) 0%,
+    color-mix(in srgb, var(--sp-brand-bg) 55%, #0d0220) 100%
+  );
+}
+
+.sp-bg__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Status bar — white on photo */
+.sp-status-bar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 14px;
+  margin-right: 14px;
+  padding: 16px 16px 0;
+  height: 54px;
+  flex-shrink: 0;
+}
+
+.sp-status-time {
+  font-size: 17px;
+  font-weight: 590;
+  line-height: 22px;
+  letter-spacing: -0.43px;
+  color: var(--sp-label-primary);
+  min-width: 50px;
+}
+
+.sp-status-island {
+  width: 124px;
+  height: 10px;
+}
+
+.sp-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 80px;
+  justify-content: flex-end;
+}
+
+.sp-status-icon {
+  display: block;
+  height: 13px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.sp-status-icon--battery {
+  width: 28px;
+  height: 13px;
+  object-fit: contain;
+}
+
+/* Centered brand logo */
+.sp-logo-wrap {
+  position: absolute;
+  top: 17%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72%;
+  max-width: 280px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.sp-logo {
+  width: 100%;
+  aspect-ratio: 512 / 115;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 3px 15px rgba(0, 0, 0, 0.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-logo__placeholder {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.45);
+  border: 1.5px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  padding: 12px 24px;
+}
+
+/* Bottom sign-in sheet */
+.sp-footer {
+  position: relative;
+  z-index: 5;
+  margin-top: auto;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.sp-sheet {
+  position: relative;
+  height: 179px;
+  width: 100%;
+}
+
+.sp-sheet__surface {
+  position: absolute;
+  inset: 0;
+  background: var(--sp-surface);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.05);
+}
+
+.sp-sheet__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 24px 0;
+}
+
+.sp-sign-in-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 24px;
+  border-radius: 12px;
+  background: var(--sp-brand-bg);
+  color: var(--sp-text-on-brand);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.43px;
+  transition: filter 0.15s;
+}
+
+.sp-sign-in-btn:hover {
+  filter: brightness(0.92);
+}
+
+.sp-sheet__footnote {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.08px;
+  color: var(--sp-label-secondary);
+  text-align: center;
+}
+
+.sp-home-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  pointer-events: none;
+}
+
+.sp-home-indicator__pill {
+  display: block;
+  width: 144px;
+  height: 5px;
+  border-radius: 100px;
+  background: #000000;
+}
+
+.sp-screen--dark .sp-home-indicator__pill {
+  background: #ffffff;
 }

@@ -1,5 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
 import { applyAssetVar } from '../engine/cssVars';
+import {
+  loadStoredLogo,
+  loadStoredSplash,
+  saveStoredLogo,
+  saveStoredSplash,
+  clearStoredLogo,
+  clearStoredSplash,
+} from '../lib/brandStorage';
 import type { AssetState } from '../types';
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -11,38 +19,41 @@ function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
+function loadAssetState(): AssetState {
+  return {
+    logoDataUrl: loadStoredLogo(),
+    splashDataUrl: loadStoredSplash(),
+  };
+}
+
 export function useAssetUploads() {
-  const [assets, setAssets] = useState<AssetState>({
-    logoDataUrl: null,
-    splashDataUrl: null,
-  });
+  const [assets, setAssets] = useState<AssetState>(loadAssetState);
+
+  useEffect(() => {
+    applyAssetVar('logo', assets.logoDataUrl);
+    applyAssetVar('splash', assets.splashDataUrl);
+  }, [assets.logoDataUrl, assets.splashDataUrl]);
 
   const uploadLogo = useCallback(async (file: File) => {
     const dataUrl = await readFileAsDataUrl(file);
     setAssets((prev) => ({ ...prev, logoDataUrl: dataUrl }));
-    applyAssetVar('logo', dataUrl);
+    saveStoredLogo(dataUrl);
   }, []);
 
   const uploadSplash = useCallback(async (file: File) => {
     const dataUrl = await readFileAsDataUrl(file);
     setAssets((prev) => ({ ...prev, splashDataUrl: dataUrl }));
-    applyAssetVar('splash', dataUrl);
+    saveStoredSplash(dataUrl);
   }, []);
 
   const clearLogo = useCallback(() => {
     setAssets((prev) => ({ ...prev, logoDataUrl: null }));
-    applyAssetVar('logo', null);
+    clearStoredLogo();
   }, []);
 
   const clearSplash = useCallback(() => {
     setAssets((prev) => ({ ...prev, splashDataUrl: null }));
-    applyAssetVar('splash', null);
-  }, []);
-
-  // Set initial none values on mount
-  useEffect(() => {
-    applyAssetVar('logo', null);
-    applyAssetVar('splash', null);
+    clearStoredSplash();
   }, []);
 
   return { assets, uploadLogo, uploadSplash, clearLogo, clearSplash };
