@@ -8,40 +8,10 @@
  */
 
 import type { PreviewMode } from '../../types';
+import cellularConnection from '../../assets/cellular_connection.svg';
+import wifi from '../../assets/wifi.svg';
+import battery from '../../assets/battery.svg';
 import iphoneBevel from '../../assets/iphone-bevel.svg';
-
-// ─── Status bar icons (inline SVG to avoid Figma dev-server dependency) ───────
-
-function CellularIcon() {
-  return (
-    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor">
-      <rect x="0" y="7" width="3" height="5" rx="1" />
-      <rect x="4.5" y="5" width="3" height="7" rx="1" />
-      <rect x="9" y="2.5" width="3" height="9.5" rx="1" />
-      <rect x="13.5" y="0" width="3" height="12" rx="1" />
-    </svg>
-  );
-}
-
-function WifiIcon() {
-  return (
-    <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor">
-      <path d="M8.5 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z" />
-      <path d="M4.5 6.5C5.8 5.2 7 4.6 8.5 4.6s2.7.6 4 1.9l1.4-1.4C12.2 3.4 10.5 2.6 8.5 2.6S4.8 3.4 3.1 5.1l1.4 1.4Z" />
-      <path d="M1.5 3.5C3.3 1.7 5.8.6 8.5.6s5.2 1.1 7 2.9L17 2.1C14.8.8 11.8 0 8.5 0S2.2.8 0 2.1l1.5 1.4Z" />
-    </svg>
-  );
-}
-
-function BatteryIcon() {
-  return (
-    <svg width="27" height="13" viewBox="0 0 27 13" fill="none">
-      <rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="currentColor" strokeOpacity="0.35" />
-      <rect x="1.5" y="1.5" width="18" height="10" rx="2" fill="currentColor" />
-      <path d="M23.5 4.5v4a2 2 0 0 0 0-4Z" fill="currentColor" fillOpacity="0.4" />
-    </svg>
-  );
-}
 
 // ─── Day picker strip ──────────────────────────────────────────────────────────
 
@@ -110,9 +80,9 @@ export function HomepageScreen({ mode }: HomepageScreenProps) {
         <span className="hp-status-time">9:41</span>
         <div className="hp-status-island" />
         <div className="hp-status-icons">
-          <CellularIcon />
-          <WifiIcon />
-          <BatteryIcon />
+          <img src={cellularConnection} alt="" className="hp-status-icon" />
+          <img src={wifi} alt="" className="hp-status-icon" />
+          <img src={battery} alt="" className="hp-status-icon hp-status-icon--battery" />
         </div>
       </div>
 

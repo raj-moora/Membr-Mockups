@@ -1,29 +1,26 @@
 import type { ReactNode } from 'react';
+import iphone16Frame from '../assets/iphone16_frame.png';
 
 interface IPhoneFrameProps {
   label?: string;
   children: ReactNode;
 }
 
-/**
- * CSS-only iPhone frame (393 × 852px, 44px corner radius, Dynamic Island, home indicator).
- * The screen content renders inside the clipped content area.
- */
+/** iPhone 16 Pro frame asset (450 × 920) with 393 × 852 logical screen content scaled to fit. */
 export function IPhoneFrame({ label, children }: IPhoneFrameProps) {
   return (
     <div className="iphone-wrapper">
       {label && <p className="iphone-label">{label}</p>}
       <div className="iphone-frame">
-        {/* Dynamic Island */}
-        <div className="iphone-dynamic-island" />
-        {/* Screen content */}
         <div className="iphone-screen">
-          {children}
+          <div className="iphone-screen-content">{children}</div>
         </div>
-        {/* Home indicator */}
-        <div className="iphone-home-indicator">
-          <div className="iphone-home-bar" />
-        </div>
+        <img
+          src={iphone16Frame}
+          alt=""
+          className="iphone-frame-overlay"
+          draggable={false}
+        />
       </div>
     </div>
   );
