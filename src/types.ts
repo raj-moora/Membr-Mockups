@@ -7,6 +7,7 @@ export type PreviewMode = 'light' | 'dark';
 export interface AssetState {
   logoDataUrl: string | null;
   splashDataUrl: string | null;
+  logoScale: number;
 }
 
 export interface BrandConfig {

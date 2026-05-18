@@ -1,8 +1,13 @@
 const KEYS = {
   primary: 'membr-brand-primary',
   logo: 'membr-logo',
+  logoScale: 'membr-logo-scale',
   splash: 'membr-splash',
 } as const;
+
+export const LOGO_SCALE_MIN = 0.5;
+export const LOGO_SCALE_MAX = 2;
+export const LOGO_SCALE_DEFAULT = 1;
 
 const HEX_RE = /^#?[0-9A-Fa-f]{6}$/;
 
@@ -62,6 +67,26 @@ export function saveStoredLogo(dataUrl: string): boolean {
 
 export function clearStoredLogo(): void {
   removeItem(KEYS.logo);
+}
+
+export function clampLogoScale(scale: number): number {
+  if (!Number.isFinite(scale)) return LOGO_SCALE_DEFAULT;
+  return Math.min(LOGO_SCALE_MAX, Math.max(LOGO_SCALE_MIN, scale));
+}
+
+export function loadStoredLogoScale(): number {
+  const raw = readItem(KEYS.logoScale);
+  if (!raw) return LOGO_SCALE_DEFAULT;
+  const value = Number.parseFloat(raw);
+  if (!Number.isFinite(value)) {
+    removeItem(KEYS.logoScale);
+    return LOGO_SCALE_DEFAULT;
+  }
+  return clampLogoScale(value);
+}
+
+export function saveStoredLogoScale(scale: number): void {
+  writeItem(KEYS.logoScale, String(clampLogoScale(scale)));
 }
 
 export function loadStoredSplash(): string | null {

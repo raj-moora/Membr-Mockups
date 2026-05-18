@@ -1,4 +1,10 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import {
+  clampLogoScale,
+  LOGO_SCALE_DEFAULT,
+  LOGO_SCALE_MAX,
+  LOGO_SCALE_MIN,
+} from '../lib/brandStorage';
 import type { BrandPalette, PreviewMode } from '../types';
 import { PaletteChip } from './PaletteChip';
 
@@ -9,6 +15,8 @@ interface ControlPanelProps {
   previewMode: PreviewMode;
   onPreviewModeChange: (mode: PreviewMode) => void;
   logoDataUrl: string | null;
+  logoScale: number;
+  onLogoScaleChange: (scale: number) => void;
   splashDataUrl: string | null;
   onLogoUpload: (file: File) => void;
   onSplashUpload: (file: File) => void;
@@ -23,6 +31,8 @@ export function ControlPanel({
   previewMode,
   onPreviewModeChange,
   logoDataUrl,
+  logoScale = LOGO_SCALE_DEFAULT,
+  onLogoScaleChange,
   splashDataUrl,
   onLogoUpload,
   onSplashUpload,
@@ -31,6 +41,7 @@ export function ControlPanel({
 }: ControlPanelProps) {
   const logoInputRef = useRef<HTMLInputElement>(null);
   const splashInputRef = useRef<HTMLInputElement>(null);
+  const [paletteOpen, setPaletteOpen] = useState(true);
 
   function handleHexInput(e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value;
@@ -106,23 +117,6 @@ export function ControlPanel({
         </div>
       </section>
 
-      {/* Palette */}
-      <section className="control-section">
-        <h2 className="control-section__heading">Derived Palette</h2>
-        <div className="palette-group">
-          <p className="palette-group__mode">Light Mode</p>
-          <PaletteChip color={palette.brandBgLight} label="Brand BG" surface="#FFFFFF" />
-          <PaletteChip color={palette.textOnBrandLight} label="Text on Brand" surface={palette.brandBgLight} />
-          <PaletteChip color={palette.brandTextLight} label="Brand Text" surface="#FFFFFF" />
-        </div>
-        <div className="palette-group">
-          <p className="palette-group__mode">Dark Mode</p>
-          <PaletteChip color={palette.brandBgDark} label="Brand BG" surface="#1C1C1E" />
-          <PaletteChip color={palette.textOnBrandDark} label="Text on Brand" surface={palette.brandBgDark} />
-          <PaletteChip color={palette.brandTextDark} label="Brand Text" surface="#1C1C1E" />
-        </div>
-      </section>
-
       {/* Logo Upload */}
       <section className="control-section">
         <h2 className="control-section__heading">Logo</h2>
@@ -151,6 +145,24 @@ export function ControlPanel({
               if (file) onLogoUpload(file);
             }}
             aria-label="Upload logo file"
+          />
+        </div>
+        <div className="logo-scale-control">
+          <div className="logo-scale-control__header">
+            <span className="logo-scale-control__label">Logo size</span>
+            <span className="logo-scale-control__value" aria-live="polite">
+              {Math.round(clampLogoScale(logoScale) * 100)}%
+            </span>
+          </div>
+          <input
+            type="range"
+            className="logo-scale-slider"
+            min={LOGO_SCALE_MIN}
+            max={LOGO_SCALE_MAX}
+            step={0.05}
+            value={clampLogoScale(logoScale)}
+            onChange={(e) => onLogoScaleChange(Number(e.target.valueAsNumber))}
+            aria-label="Logo size on splash screen"
           />
         </div>
       </section>
@@ -184,6 +196,42 @@ export function ControlPanel({
             }}
             aria-label="Upload splash image file"
           />
+        </div>
+      </section>
+
+      {/* Palette */}
+      <section className="control-section palette-accordion">
+        <button
+          type="button"
+          className="palette-accordion__trigger"
+          aria-expanded={paletteOpen}
+          aria-controls="palette-accordion-content"
+          onClick={() => setPaletteOpen((open) => !open)}
+        >
+          <h2 className="control-section__heading">Derived Palette</h2>
+          <span className={`palette-accordion__chevron${paletteOpen ? ' palette-accordion__chevron--open' : ''}`} aria-hidden>
+            ›
+          </span>
+        </button>
+        <div
+          id="palette-accordion-content"
+          className={`palette-accordion__content${paletteOpen ? ' palette-accordion__content--open' : ''}`}
+          aria-hidden={!paletteOpen}
+        >
+          <div className="palette-accordion__content-inner">
+            <div className="palette-group">
+              <p className="palette-group__mode">Light Mode</p>
+              <PaletteChip color={palette.brandBgLight} label="Brand BG" surface="#FFFFFF" />
+              <PaletteChip color={palette.textOnBrandLight} label="Text on Brand" surface={palette.brandBgLight} />
+              <PaletteChip color={palette.brandTextLight} label="Brand Text" surface="#FFFFFF" />
+            </div>
+            <div className="palette-group">
+              <p className="palette-group__mode">Dark Mode</p>
+              <PaletteChip color={palette.brandBgDark} label="Brand BG" surface="#1C1C1E" />
+              <PaletteChip color={palette.textOnBrandDark} label="Text on Brand" surface={palette.brandBgDark} />
+              <PaletteChip color={palette.brandTextDark} label="Brand Text" surface="#1C1C1E" />
+            </div>
+          </div>
         </div>
       </section>
     </aside>

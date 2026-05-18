@@ -4,7 +4,7 @@
  *   Dark:  node 17658:79765
  *
  * Brand tokens are aliased on .hp-screen as --hp-brand-bg, --hp-brand-text,
- * --hp-text-on-brand (swap via .hp-screen--dark). --asset-logo is the avatar.
+ * --hp-text-on-brand (swap via .hp-screen--dark).
  */
 
 import type { PreviewMode } from '../../types';
@@ -93,14 +93,8 @@ export function HomepageScreen({ mode }: HomepageScreenProps) {
         <div className="hp-nav__avatar">
           <div
             className="hp-avatar-img"
-            style={{
-              backgroundImage: 'var(--asset-logo, none)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
             aria-label="Account avatar"
           >
-            {/* Fallback initials when no logo uploaded */}
             <span className="hp-avatar-fallback">A</span>
           </div>
         </div>

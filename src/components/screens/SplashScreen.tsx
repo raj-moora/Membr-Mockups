@@ -16,10 +16,16 @@ import battery from '../../assets/battery.svg';
 interface SplashScreenProps {
   mode: PreviewMode;
   hasLogo?: boolean;
+  logoScale?: number;
   splashDataUrl?: string | null;
 }
 
-export function SplashScreen({ mode, hasLogo = false, splashDataUrl = null }: SplashScreenProps) {
+export function SplashScreen({
+  mode,
+  hasLogo = false,
+  logoScale = 1,
+  splashDataUrl = null,
+}: SplashScreenProps) {
   return (
     <div className={`sp-screen${mode === 'dark' ? ' sp-screen--dark' : ''}`}>
       <div className="sp-bg" aria-hidden>
@@ -39,7 +45,10 @@ export function SplashScreen({ mode, hasLogo = false, splashDataUrl = null }: Sp
         </div>
       </div>
 
-      <div className="sp-logo-wrap">
+      <div
+        className="sp-logo-wrap"
+        style={{ '--sp-logo-scale': String(logoScale) } as React.CSSProperties}
+      >
         <div
           className="sp-logo"
           style={{

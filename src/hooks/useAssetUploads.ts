@@ -1,9 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
 import { applyAssetVar } from '../engine/cssVars';
 import {
+  clampLogoScale,
   loadStoredLogo,
+  loadStoredLogoScale,
   loadStoredSplash,
   saveStoredLogo,
+  saveStoredLogoScale,
   saveStoredSplash,
   clearStoredLogo,
   clearStoredSplash,
@@ -23,11 +26,12 @@ function loadAssetState(): AssetState {
   return {
     logoDataUrl: loadStoredLogo(),
     splashDataUrl: loadStoredSplash(),
+    logoScale: loadStoredLogoScale(),
   };
 }
 
 export function useAssetUploads() {
-  const [assets, setAssets] = useState<AssetState>(loadAssetState);
+  const [assets, setAssets] = useState<AssetState>(() => loadAssetState());
 
   useEffect(() => {
     applyAssetVar('logo', assets.logoDataUrl);
@@ -56,5 +60,19 @@ export function useAssetUploads() {
     clearStoredSplash();
   }, []);
 
-  return { assets, uploadLogo, uploadSplash, clearLogo, clearSplash };
+  const setLogoScale = useCallback((scale: number) => {
+    const next = clampLogoScale(scale);
+    setAssets((prev) => ({ ...prev, logoScale: next }));
+    saveStoredLogoScale(next);
+  }, []);
+
+  return {
+    assets,
+    logoScale: assets.logoScale,
+    setLogoScale,
+    uploadLogo,
+    uploadSplash,
+    clearLogo,
+    clearSplash,
+  };
 }
