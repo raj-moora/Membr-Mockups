@@ -19,6 +19,7 @@ import type { BrandPalette } from './colorEngine';
  *
  *   --asset-logo            url("dataURL")  or  none
  *   --asset-splash          url("dataURL")  or  none
+ *   --asset-app-icon        url("dataURL")  or  none
  *
  * ─────────────────────────────────────────────────────────────────────────────
  */
@@ -33,7 +34,7 @@ export function applyPaletteVars(palette: BrandPalette): void {
   root.style.setProperty('--brand-text-dark', palette.brandTextDark);
 }
 
-export function applyAssetVar(name: 'logo' | 'splash', dataUrl: string | null): void {
+export function applyAssetVar(name: 'logo' | 'splash' | 'app-icon', dataUrl: string | null): void {
   const root = document.documentElement;
   const value = dataUrl ? `url("${dataUrl}")` : 'none';
   root.style.setProperty(`--asset-${name}`, value);

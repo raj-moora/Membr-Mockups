@@ -18,10 +18,13 @@ interface ControlPanelProps {
   logoScale: number;
   onLogoScaleChange: (scale: number) => void;
   splashDataUrl: string | null;
+  appIconDataUrl: string | null;
   onLogoUpload: (file: File) => void;
   onSplashUpload: (file: File) => void;
+  onAppIconUpload: (file: File) => void;
   onLogoClear: () => void;
   onSplashClear: () => void;
+  onAppIconClear: () => void;
 }
 
 export function ControlPanel({
@@ -34,13 +37,17 @@ export function ControlPanel({
   logoScale = LOGO_SCALE_DEFAULT,
   onLogoScaleChange,
   splashDataUrl,
+  appIconDataUrl,
   onLogoUpload,
   onSplashUpload,
+  onAppIconUpload,
   onLogoClear,
   onSplashClear,
+  onAppIconClear,
 }: ControlPanelProps) {
   const logoInputRef = useRef<HTMLInputElement>(null);
   const splashInputRef = useRef<HTMLInputElement>(null);
+  const appIconInputRef = useRef<HTMLInputElement>(null);
   const [paletteOpen, setPaletteOpen] = useState(true);
 
   function handleHexInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -163,6 +170,40 @@ export function ControlPanel({
             value={clampLogoScale(logoScale)}
             onChange={(e) => onLogoScaleChange(Number(e.target.valueAsNumber))}
             aria-label="Logo size on splash screen"
+          />
+        </div>
+      </section>
+
+      {/* App Icon Upload */}
+      <section className="control-section">
+        <h2 className="control-section__heading">App Icon</h2>
+        <div className="asset-upload">
+          {appIconDataUrl ? (
+            <div className="asset-preview">
+              <img src={appIconDataUrl} alt="App icon preview" className="asset-preview__img" />
+              <button className="asset-clear-btn" onClick={onAppIconClear} aria-label="Remove app icon">
+                ✕
+              </button>
+            </div>
+          ) : (
+            <button
+              className="asset-upload-btn"
+              onClick={() => appIconInputRef.current?.click()}
+            >
+              <span className="asset-upload-btn__icon">↑</span>
+              Upload app icon
+            </button>
+          )}
+          <input
+            ref={appIconInputRef}
+            type="file"
+            accept="image/*,.svg"
+            className="asset-input-hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) onAppIconUpload(file);
+            }}
+            aria-label="Upload app icon file"
           />
         </div>
       </section>

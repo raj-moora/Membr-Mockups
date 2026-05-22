@@ -3,6 +3,7 @@ const KEYS = {
   logo: 'membr-logo',
   logoScale: 'membr-logo-scale',
   splash: 'membr-splash',
+  appIcon: 'membr-app-icon',
 } as const;
 
 export const LOGO_SCALE_MIN = 0.5;
@@ -100,4 +101,17 @@ export function saveStoredSplash(dataUrl: string): boolean {
 
 export function clearStoredSplash(): void {
   removeItem(KEYS.splash);
+}
+
+export function loadStoredAppIcon(): string | null {
+  const raw = readItem(KEYS.appIcon);
+  return raw && isImageDataUrl(raw) ? raw : null;
+}
+
+export function saveStoredAppIcon(dataUrl: string): boolean {
+  return writeItem(KEYS.appIcon, dataUrl);
+}
+
+export function clearStoredAppIcon(): void {
+  removeItem(KEYS.appIcon);
 }

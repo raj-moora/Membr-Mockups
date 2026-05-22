@@ -5,11 +5,14 @@ import {
   loadStoredLogo,
   loadStoredLogoScale,
   loadStoredSplash,
+  loadStoredAppIcon,
   saveStoredLogo,
   saveStoredLogoScale,
   saveStoredSplash,
+  saveStoredAppIcon,
   clearStoredLogo,
   clearStoredSplash,
+  clearStoredAppIcon,
 } from '../lib/brandStorage';
 import type { AssetState } from '../types';
 
@@ -26,6 +29,7 @@ function loadAssetState(): AssetState {
   return {
     logoDataUrl: loadStoredLogo(),
     splashDataUrl: loadStoredSplash(),
+    appIconDataUrl: loadStoredAppIcon(),
     logoScale: loadStoredLogoScale(),
   };
 }
@@ -36,7 +40,8 @@ export function useAssetUploads() {
   useEffect(() => {
     applyAssetVar('logo', assets.logoDataUrl);
     applyAssetVar('splash', assets.splashDataUrl);
-  }, [assets.logoDataUrl, assets.splashDataUrl]);
+    applyAssetVar('app-icon', assets.appIconDataUrl);
+  }, [assets.logoDataUrl, assets.splashDataUrl, assets.appIconDataUrl]);
 
   const uploadLogo = useCallback(async (file: File) => {
     const dataUrl = await readFileAsDataUrl(file);
@@ -60,6 +65,17 @@ export function useAssetUploads() {
     clearStoredSplash();
   }, []);
 
+  const uploadAppIcon = useCallback(async (file: File) => {
+    const dataUrl = await readFileAsDataUrl(file);
+    setAssets((prev) => ({ ...prev, appIconDataUrl: dataUrl }));
+    saveStoredAppIcon(dataUrl);
+  }, []);
+
+  const clearAppIcon = useCallback(() => {
+    setAssets((prev) => ({ ...prev, appIconDataUrl: null }));
+    clearStoredAppIcon();
+  }, []);
+
   const setLogoScale = useCallback((scale: number) => {
     const next = clampLogoScale(scale);
     setAssets((prev) => ({ ...prev, logoScale: next }));
@@ -72,7 +88,9 @@ export function useAssetUploads() {
     setLogoScale,
     uploadLogo,
     uploadSplash,
+    uploadAppIcon,
     clearLogo,
     clearSplash,
+    clearAppIcon,
   };
 }

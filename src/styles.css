@@ -16,6 +16,7 @@
   --brand-text-dark: #b899fc;
   --asset-logo: none;
   --asset-splash: none;
+  --asset-app-icon: none;
 
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', sans-serif;
   color-scheme: light;
@@ -1718,4 +1719,88 @@ button {
 
 .bk-screen--dark .bk-home-indicator__pill {
   background: #ffffff;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Placeholder screen — ph-* namespace (Figma 17816:179488 App Icon)
+───────────────────────────────────────────────────────────────────────────── */
+.ph-screen {
+  --ph-brand-bg: var(--brand-bg-light);
+
+  width: 375px;
+  height: 810px;
+  margin: 0 0 0 9px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ph-screen--dark {
+  --ph-brand-bg: var(--brand-bg-dark);
+}
+
+.ph-screen__bg {
+  display: block;
+  width: 375px;
+  height: 812px;
+  margin-left: 0;
+  margin-right: 0;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.ph-app-icon {
+  position: absolute;
+  top: 288px;
+  left: 195px;
+  margin-top: 173px;
+  margin-left: -171px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 72px;
+}
+
+.ph-app-icon__tile {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--ph-brand-bg, #6923f4) 90%, white) 0%,
+    var(--ph-brand-bg, #6923f4) 48%,
+    color-mix(in srgb, var(--ph-brand-bg, #6923f4) 88%, black) 100%
+  );
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ph-app-icon__graphic {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  transform: translateX(-50%) scale(var(--ph-logo-scale, 1));
+  transform-origin: center center;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ph-app-icon__label {
+  margin: 0;
+  max-width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 510;
+  line-height: normal;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 2px 25px #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

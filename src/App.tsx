@@ -6,13 +6,23 @@ import { IPhoneFrame } from './components/IPhoneFrame';
 import { HomepageScreen } from './components/screens/HomepageScreen';
 import { SplashScreen } from './components/screens/SplashScreen';
 import { BookingsScreen } from './components/screens/BookingsScreen';
+import { PlaceholderScreen } from './components/screens/PlaceholderScreen';
 import type { PreviewMode } from './types';
 import './styles.css';
 
 export default function App() {
   const { primaryHex, setPrimaryHex, palette } = useBrandPalette();
-  const { assets, logoScale, setLogoScale, uploadLogo, uploadSplash, clearLogo, clearSplash } =
-    useAssetUploads();
+  const {
+    assets,
+    logoScale,
+    setLogoScale,
+    uploadLogo,
+    uploadSplash,
+    uploadAppIcon,
+    clearLogo,
+    clearSplash,
+    clearAppIcon,
+  } = useAssetUploads();
   const [previewMode, setPreviewMode] = useState<PreviewMode>('light');
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -29,10 +39,13 @@ export default function App() {
           logoScale={logoScale}
           onLogoScaleChange={setLogoScale}
           splashDataUrl={assets.splashDataUrl}
+          appIconDataUrl={assets.appIconDataUrl}
           onLogoUpload={uploadLogo}
           onSplashUpload={uploadSplash}
+          onAppIconUpload={uploadAppIcon}
           onLogoClear={clearLogo}
           onSplashClear={clearSplash}
+          onAppIconClear={clearAppIcon}
         />
         <button
           type="button"
@@ -61,6 +74,9 @@ export default function App() {
           </IPhoneFrame>
           <IPhoneFrame label="Bookings page">
             <BookingsScreen mode={previewMode} />
+          </IPhoneFrame>
+          <IPhoneFrame label="app icon">
+            <PlaceholderScreen mode={previewMode} logoScale={logoScale} />
           </IPhoneFrame>
         </div>
       </main>
