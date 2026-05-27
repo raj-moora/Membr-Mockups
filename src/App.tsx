@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useBrandPalette } from './hooks/useBrandPalette';
 import { useAssetUploads } from './hooks/useAssetUploads';
+import { exportElementAsPng } from './lib/exportCanvas';
 import { ControlPanel } from './components/ControlPanel';
 import { IPhoneFrame } from './components/IPhoneFrame';
 import { HomepageScreen } from './components/screens/HomepageScreen';
@@ -27,6 +28,21 @@ export default function App() {
   } = useAssetUploads();
   const [previewMode, setPreviewMode] = useState<PreviewMode>('light');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [exporting, setExporting] = useState(false);
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  const handleExportAll = useCallback(async () => {
+    const node = canvasRef.current;
+    if (!node || exporting) return;
+    setExporting(true);
+    try {
+      await exportElementAsPng(node, 'membr-mockups.png');
+    } catch (err) {
+      console.error('Export failed', err);
+    } finally {
+      setExporting(false);
+    }
+  }, [exporting]);
 
   return (
     <div className={`app-layout${sidebarOpen ? '' : ' app-layout--sidebar-collapsed'}`}>
@@ -61,8 +77,18 @@ export default function App() {
           </span>
         </button>
       </div>
+      <button
+        type="button"
+        className="export-all-btn"
+        onClick={handleExportAll}
+        disabled={exporting}
+        aria-busy={exporting}
+      >
+        {exporting && <span className="export-all-btn__spinner" aria-hidden />}
+        {exporting ? 'Exporting…' : 'Export all'}
+      </button>
       <main className="preview-panel">
-        <div className="preview-panel__inner">
+        <div className="preview-panel__inner" ref={canvasRef}>
           <IPhoneFrame label={previewMode === 'dark' ? 'Dark Mode' : 'Light Mode'}>
             <HomepageScreen mode={previewMode} />
           </IPhoneFrame>

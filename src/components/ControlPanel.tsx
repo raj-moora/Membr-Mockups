@@ -124,56 +124,6 @@ export function ControlPanel({
         </div>
       </section>
 
-      {/* Logo Upload */}
-      <section className="control-section">
-        <h2 className="control-section__heading">Logo</h2>
-        <div className="asset-upload">
-          {logoDataUrl ? (
-            <div className="asset-preview">
-              <img src={logoDataUrl} alt="Logo preview" className="asset-preview__img" />
-              <button className="asset-clear-btn" onClick={onLogoClear} aria-label="Remove logo">✕</button>
-            </div>
-          ) : (
-            <button
-              className="asset-upload-btn"
-              onClick={() => logoInputRef.current?.click()}
-            >
-              <span className="asset-upload-btn__icon">↑</span>
-              Upload logo
-            </button>
-          )}
-          <input
-            ref={logoInputRef}
-            type="file"
-            accept="image/*"
-            className="asset-input-hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) onLogoUpload(file);
-            }}
-            aria-label="Upload logo file"
-          />
-        </div>
-        <div className="logo-scale-control">
-          <div className="logo-scale-control__header">
-            <span className="logo-scale-control__label">Logo size</span>
-            <span className="logo-scale-control__value" aria-live="polite">
-              {Math.round(clampLogoScale(logoScale) * 100)}%
-            </span>
-          </div>
-          <input
-            type="range"
-            className="logo-scale-slider"
-            min={LOGO_SCALE_MIN}
-            max={LOGO_SCALE_MAX}
-            step={0.05}
-            value={clampLogoScale(logoScale)}
-            onChange={(e) => onLogoScaleChange(Number(e.target.valueAsNumber))}
-            aria-label="Logo size on splash screen"
-          />
-        </div>
-      </section>
-
       {/* App Icon Upload */}
       <section className="control-section">
         <h2 className="control-section__heading">App Icon</h2>
@@ -238,6 +188,58 @@ export function ControlPanel({
             aria-label="Upload splash image file"
           />
         </div>
+      </section>
+
+      {/* Logo Upload */}
+      <section className="control-section">
+        <h2 className="control-section__heading">Splash Logo</h2>
+        <div className="asset-upload">
+          {logoDataUrl ? (
+            <div className="asset-preview">
+              <img src={logoDataUrl} alt="Logo preview" className="asset-preview__img" />
+              <button className="asset-clear-btn" onClick={onLogoClear} aria-label="Remove logo">✕</button>
+            </div>
+          ) : (
+            <button
+              className="asset-upload-btn"
+              onClick={() => logoInputRef.current?.click()}
+            >
+              <span className="asset-upload-btn__icon">↑</span>
+              Upload logo
+            </button>
+          )}
+          <input
+            ref={logoInputRef}
+            type="file"
+            accept="image/*"
+            className="asset-input-hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) onLogoUpload(file);
+            }}
+            aria-label="Upload logo file"
+          />
+        </div>
+        {logoDataUrl && (
+          <div className="logo-scale-control">
+            <div className="logo-scale-control__header">
+              <span className="logo-scale-control__label">Logo size</span>
+              <span className="logo-scale-control__value" aria-live="polite">
+                {Math.round(clampLogoScale(logoScale) * 100)}%
+              </span>
+            </div>
+            <input
+              type="range"
+              className="logo-scale-slider"
+              min={LOGO_SCALE_MIN}
+              max={LOGO_SCALE_MAX}
+              step={0.05}
+              value={clampLogoScale(logoScale)}
+              onChange={(e) => onLogoScaleChange(Number(e.target.valueAsNumber))}
+              aria-label="Logo size on splash screen"
+            />
+          </div>
+        )}
       </section>
 
       {/* Palette */}

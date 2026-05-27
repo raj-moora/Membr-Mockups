@@ -494,6 +494,52 @@ button {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Export all
+───────────────────────────────────────────────────────────────────────────── */
+.export-all-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c1c1e;
+  background: #ffffff;
+  border: 1px solid #e0e0e6;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+
+.export-all-btn:hover:not(:disabled) {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.export-all-btn:disabled {
+  opacity: 0.85;
+  cursor: wait;
+}
+
+.export-all-btn__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #e0e0e6;
+  border-top-color: var(--brand-bg-light, #6923f4);
+  border-radius: 50%;
+  animation: export-all-spin 0.7s linear infinite;
+}
+
+@keyframes export-all-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Preview panel (right)
 ───────────────────────────────────────────────────────────────────────────── */
 .preview-panel {
@@ -621,7 +667,7 @@ button {
   --hp-label-secondary: rgba(235, 235, 245, 0.6);
   --hp-label-quaternary: rgba(235, 235, 245, 0.16);
   --hp-label-tertiary: rgba(235, 235, 245, 0.3);
-  --hp-separator: rgba(84, 84, 86, 0.6);
+  --hp-separator: rgba(84, 84, 86, 0.3);
   --hp-fill-quaternary: rgba(120, 120, 128, 0.18);
   --hp-gray-5: #2c2c2e;
   --hp-orange: #ff9f0a;
@@ -1678,7 +1724,7 @@ button {
   font-size: 17px;
   font-weight: 400;
   line-height: 22px;
-  letter-spacing: -0.43px;
+  letter-spacing: 0px;
   transition: filter 0.15s;
 }
 
@@ -1729,7 +1775,7 @@ button {
   --bk-label-primary: #000000;
   --bk-label-secondary: rgba(60, 60, 67, 0.6);
   --bk-label-tertiary: rgba(60, 60, 67, 0.3);
-  --bk-separator: rgba(84, 84, 86, 0.34);
+  --bk-separator: rgba(197, 197, 198, 0.3);
   --bk-orange: #ff9500;
   --bk-red: #ff3b30;
   --bk-brand-bg: var(--brand-bg-light);
@@ -1754,7 +1800,7 @@ button {
   --bk-label-primary: #ffffff;
   --bk-label-secondary: rgba(235, 235, 245, 0.6);
   --bk-label-tertiary: rgba(235, 235, 245, 0.3);
-  --bk-separator: rgba(84, 84, 86, 0.6);
+  --bk-separator: rgba(197, 197, 198, 0.5);
   --bk-orange: #ff9f0a;
   --bk-red: #ff453a;
   --bk-brand-bg: var(--brand-bg-dark);
@@ -1935,7 +1981,7 @@ button {
   letter-spacing: -0.23px;
   color: var(--bk-label-primary);
   background: var(--bk-surface);
-  border-bottom: 0.33px solid var(--bk-separator);
+  border-bottom: 1px solid var(--bk-separator);
   padding: 8px 16px;
   z-index: 4;
 }
@@ -1967,7 +2013,7 @@ button {
   letter-spacing: -0.45px;
   color: var(--bk-label-primary);
   padding: 10px 19px 5px;
-  border-bottom: 0.33px solid var(--bk-separator);
+  border-bottom: 1px solid var(--bk-separator);
 }
 
 .bk-section__list {
@@ -1994,7 +2040,7 @@ button {
 .bk-row__inner {
   flex: 1;
   min-width: 0;
-  border-bottom: 0.33px solid var(--bk-separator);
+  border-bottom: 1px solid var(--bk-separator);
   padding-right: 16px;
 }
 
@@ -2350,7 +2396,7 @@ button {
   font-size: 17px;
   font-weight: 590;
   line-height: 22px;
-  letter-spacing: -0.43px;
+  letter-spacing: 0;
   color: var(--cp-label-primary);
 }
 

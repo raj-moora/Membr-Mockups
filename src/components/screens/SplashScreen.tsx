@@ -45,21 +45,21 @@ export function SplashScreen({
         </div>
       </div>
 
-      <div
-        className="sp-logo-wrap"
-        style={{ '--sp-logo-scale': String(logoScale) } as React.CSSProperties}
-      >
+      {hasLogo && (
         <div
-          className="sp-logo"
-          style={{
-            backgroundImage: 'var(--asset-logo, none)',
-          }}
-          role="img"
-          aria-label="Brand logo"
+          className="sp-logo-wrap"
+          style={{ '--sp-logo-scale': String(logoScale) } as React.CSSProperties}
         >
-          {!hasLogo && <span className="sp-logo__placeholder">Logo</span>}
+          <div
+            className="sp-logo"
+            style={{
+              backgroundImage: 'var(--asset-logo, none)',
+            }}
+            role="img"
+            aria-label="Brand logo"
+          />
         </div>
-      </div>
+      )}
 
       <div className="sp-footer">
         <div className="sp-sheet">
