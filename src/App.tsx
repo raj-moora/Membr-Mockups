@@ -4,8 +4,10 @@ import { useAssetUploads } from './hooks/useAssetUploads';
 import { ControlPanel } from './components/ControlPanel';
 import { IPhoneFrame } from './components/IPhoneFrame';
 import { HomepageScreen } from './components/screens/HomepageScreen';
+import { ShowPass } from './components/screens/ShowPass';
 import { SplashScreen } from './components/screens/SplashScreen';
 import { BookingsScreen } from './components/screens/BookingsScreen';
+import { BookingsScreenCopy } from './components/screens/BookingsScreenCopy';
 import { PlaceholderScreen } from './components/screens/PlaceholderScreen';
 import type { PreviewMode } from './types';
 import './styles.css';
@@ -64,6 +66,9 @@ export default function App() {
           <IPhoneFrame label={previewMode === 'dark' ? 'Dark Mode' : 'Light Mode'}>
             <HomepageScreen mode={previewMode} />
           </IPhoneFrame>
+          <IPhoneFrame label="Show Pass">
+            <ShowPass mode={previewMode} />
+          </IPhoneFrame>
           <IPhoneFrame label="Splash Screen" variant="splash">
             <SplashScreen
               mode={previewMode}
@@ -74,6 +79,9 @@ export default function App() {
           </IPhoneFrame>
           <IPhoneFrame label="Bookings page">
             <BookingsScreen mode={previewMode} />
+          </IPhoneFrame>
+          <IPhoneFrame label="Class preview">
+            <BookingsScreenCopy mode={previewMode} />
           </IPhoneFrame>
           <IPhoneFrame label="app icon">
             <PlaceholderScreen mode={previewMode} logoScale={logoScale} />

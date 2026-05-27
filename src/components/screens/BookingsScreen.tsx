@@ -9,6 +9,7 @@ import type { PreviewMode } from '../../types';
 import cellularConnection from '../../assets/cellular_connection.svg';
 import wifi from '../../assets/wifi.svg';
 import battery from '../../assets/battery.svg';
+import fireIcon from '../../assets/fire_icon.svg';
 
 type ClassBadge =
   | { type: 'booked' }
@@ -101,14 +102,6 @@ function BookedCheck() {
   );
 }
 
-function FlameIcon() {
-  return (
-    <svg className="bk-tag__flame" width="11" height="14" viewBox="0 0 11 14" fill="currentColor" aria-hidden>
-      <path d="M5.5 0C5.5 3.2 3.2 4.8 2 7.2 0.8 9.4 1.6 12 3.4 13.2 2.6 11.6 2.8 9.8 4 8.4 3 7.2 3.4 4.6 5.5 2.4V0ZM5.5 14C8.3 14 10.5 11.5 10.5 8.6 10.5 5.4 7.8 3.2 5.5 0 3.2 3.2 0.5 5.4 0.5 8.6 0.5 11.5 2.7 14 5.5 14Z" />
-    </svg>
-  );
-}
-
 function ClassBadgeView({ badge }: { badge: ClassBadge }) {
   if (badge.type === 'booked') {
     return (
@@ -121,7 +114,7 @@ function ClassBadgeView({ badge }: { badge: ClassBadge }) {
   if (badge.type === 'spaces') {
     return (
       <span className="bk-tag bk-tag--spaces">
-        <FlameIcon />
+        <img src={fireIcon} alt="" className="bk-tag__flame" aria-hidden />
         <span>{badge.count} spaces left</span>
       </span>
     );
