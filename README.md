@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# Membr Mockups
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+High-fidelity iOS and Android gym-app screen mockups for design review and brand demos. Pick a primary brand color, upload logo / splash / app icon assets, and preview multiple screens side-by-side in light or dark mode.
 
-Currently, two official plugins are available:
+**Live demo:** [GitHub Pages](https://github.com/marianatek/Membr-Mockups) (see `base` in `vite.config.ts` for the deploy path).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Scripts
 
-## React Compiler
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Local dev server |
+| `npm run build` | Typecheck + production build |
+| `npm run preview` | Preview production build |
+| `npm run lint` | ESLint |
+| `npm run test` | Vitest (theme engines) |
+| `npm run typecheck` | TypeScript project references only |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Project layout
 
-## Expanding the ESLint configuration
+- `src/App.tsx` — layout, export, theme application
+- `src/previewRegistry.tsx` — which screens appear per platform
+- `src/components/screens/` — iOS screens
+- `src/components/screens/android/` — Android screens
+- `src/components/screens/shared/` — mock data, `IOSStatusBar`, shared bookings UI
+- `src/engine/` — iOS brand palette + Android Material 3 theme derivation
+- `src/styles.css` — app chrome, iPhone frame, iOS screen styles
+- `src/android-screens.css` — Android screen styles
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Theming
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **iOS:** `useBrandPalette` → `derivePalette` → CSS `--brand-*` tokens on `:root`
+- **Android:** `deriveMaterialTheme` → `--md-*` tokens via `applyMaterialThemeVars`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Screens alias brand/Material tokens per namespace (e.g. `--hp-brand-bg`, `--abk-surface`).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Adding a screen
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Implement the screen component under `src/components/screens/` (and `android/` if needed).
+2. Add styles with a unique BEM prefix in `styles.css` or `android-screens.css`.
+3. Register an entry in `src/previewRegistry.tsx`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Assets
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Place static assets in `src/assets/`. User-uploaded logo, splash, and app icon are injected via CSS variables (`--asset-logo`, `--asset-splash`, `--asset-app-icon`) from the control panel.

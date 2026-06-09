@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { derivePalette, type BrandPalette } from '../engine/colorEngine';
+import { useLayoutEffect, useMemo, useState } from 'react';
+import { derivePalette } from '../engine/colorEngine';
 import { applyPaletteVars } from '../engine/cssVars';
 import { loadStoredPrimary, saveStoredPrimary } from '../lib/brandStorage';
 
@@ -9,16 +9,13 @@ export function useBrandPalette() {
   const [primaryHex, setPrimaryHex] = useState<string>(() =>
     loadStoredPrimary(DEFAULT_PRIMARY),
   );
-  const [palette, setPalette] = useState<BrandPalette>(() =>
-    derivePalette(loadStoredPrimary(DEFAULT_PRIMARY)),
-  );
 
-  useEffect(() => {
-    const derived = derivePalette(primaryHex);
-    setPalette(derived);
-    applyPaletteVars(derived);
+  const palette = useMemo(() => derivePalette(primaryHex), [primaryHex]);
+
+  useLayoutEffect(() => {
+    applyPaletteVars(palette);
     saveStoredPrimary(primaryHex);
-  }, [primaryHex]);
+  }, [palette, primaryHex]);
 
   return { primaryHex, setPrimaryHex, palette };
 }

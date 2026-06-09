@@ -11,24 +11,22 @@
  * Icon tile: subtle diagonal gradient from --ph-brand-bg (.ph-app-icon__tile).
  */
 
+import type { CSSProperties } from 'react';
 import homeScreenBg from '../../assets/app_icon.png';
-import type { PreviewMode } from '../../types';
+import type { ScreenAssetProps, ScreenModeProps } from '../../types';
 
-interface PlaceholderScreenProps {
-  mode: PreviewMode;
-  logoScale?: number;
-}
+export interface PlaceholderScreenProps extends ScreenModeProps, ScreenAssetProps {}
 
 export function PlaceholderScreen({
   mode,
-  logoScale = 1,
+  appIconScale = 1,
 }: PlaceholderScreenProps) {
   return (
     <div className={`ph-screen${mode === 'dark' ? ' ph-screen--dark' : ''}`}>
       <img src={homeScreenBg} alt="" className="ph-screen__bg" />
       <div
         className="ph-app-icon"
-        style={{ '--ph-logo-scale': String(logoScale) } as React.CSSProperties}
+        style={{ '--ph-logo-scale': String(appIconScale) } as CSSProperties}
       >
         <div className="ph-app-icon__tile">
           <div

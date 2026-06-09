@@ -43,16 +43,18 @@ export function useAssetUploads() {
     applyAssetVar('app-icon', assets.appIconDataUrl);
   }, [assets.logoDataUrl, assets.splashDataUrl, assets.appIconDataUrl]);
 
-  const uploadLogo = useCallback(async (file: File) => {
+  const uploadLogo = useCallback(async (file: File): Promise<string> => {
     const dataUrl = await readFileAsDataUrl(file);
     setAssets((prev) => ({ ...prev, logoDataUrl: dataUrl }));
     saveStoredLogo(dataUrl);
+    return dataUrl;
   }, []);
 
-  const uploadSplash = useCallback(async (file: File) => {
+  const uploadSplash = useCallback(async (file: File): Promise<string> => {
     const dataUrl = await readFileAsDataUrl(file);
     setAssets((prev) => ({ ...prev, splashDataUrl: dataUrl }));
     saveStoredSplash(dataUrl);
+    return dataUrl;
   }, []);
 
   const clearLogo = useCallback(() => {
@@ -65,10 +67,11 @@ export function useAssetUploads() {
     clearStoredSplash();
   }, []);
 
-  const uploadAppIcon = useCallback(async (file: File) => {
+  const uploadAppIcon = useCallback(async (file: File): Promise<string> => {
     const dataUrl = await readFileAsDataUrl(file);
     setAssets((prev) => ({ ...prev, appIconDataUrl: dataUrl }));
     saveStoredAppIcon(dataUrl);
+    return dataUrl;
   }, []);
 
   const clearAppIcon = useCallback(() => {

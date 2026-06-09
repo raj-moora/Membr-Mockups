@@ -5,32 +5,25 @@
  * (swap via .shp-screen--dark).
  */
 
-import type { PreviewMode } from '../../types';
-import cellularConnection from '../../assets/cellular_connection.svg';
-import wifi from '../../assets/wifi.svg';
-import battery from '../../assets/battery.svg';
+import type { ScreenBrandProps, ScreenModeProps } from '../../types';
+import { DEFAULT_GYM_NAME } from '../../lib/brandStorage';
 import showPassQr from '../../assets/show_pass_qr.png';
 import showPassAvatar from '../../assets/show_pass_avatar.png';
 import appleWalletIcon from '../../assets/apple_wallet_icon.png';
+import { MEMBER_PASS_MOCK } from './shared/mockData';
+import { IOSHomeIndicator } from './shared/IOSHomeIndicator';
+import { IOSStatusBar } from './shared/IOSStatusBar';
 
-interface ShowPassProps {
-  mode: PreviewMode;
-}
+export type ShowPassProps = ScreenModeProps & ScreenBrandProps;
 
-export function ShowPass({ mode }: ShowPassProps) {
+export function ShowPass({ mode, gymName = DEFAULT_GYM_NAME }: ShowPassProps) {
+  const member = MEMBER_PASS_MOCK;
+
   return (
     <div className={`shp-screen${mode === 'dark' ? ' shp-screen--dark' : ''}`}>
       <div className="shp-backdrop" aria-hidden />
 
-      <div className="shp-status-bar">
-        <span className="shp-status-time">9:41</span>
-        <div className="shp-status-island" />
-        <div className="shp-status-icons">
-          <img src={cellularConnection} alt="" className="shp-status-icon" />
-          <img src={wifi} alt="" className="shp-status-icon" />
-          <img src={battery} alt="" className="shp-status-icon shp-status-icon--battery" />
-        </div>
-      </div>
+      <IOSStatusBar variant="shp" />
 
       <div className="shp-glow" aria-hidden />
 
@@ -44,7 +37,7 @@ export function ShowPass({ mode }: ShowPassProps) {
 
           <div className="shp-pin">
             <p className="shp-pin__label">Pin</p>
-            <p className="shp-pin__value">775489</p>
+            <p className="shp-pin__value">{member.pin}</p>
           </div>
 
           <button type="button" className="shp-wallet-btn">
@@ -55,13 +48,13 @@ export function ShowPass({ mode }: ShowPassProps) {
 
         <div className="shp-member">
           <div className="shp-member__info">
-            <p className="shp-member__name">Jane Doe</p>
-            <p className="shp-member__meta">Xplor Gyms</p>
-            <p className="shp-member__meta">Joined June 2020</p>
+            <p className="shp-member__name">{member.name}</p>
+            <p className="shp-member__meta">{gymName}</p>
+            <p className="shp-member__meta">{member.joined}</p>
           </div>
           <div className="shp-avatar">
             <span className="shp-avatar__initials" aria-hidden>
-              JD
+              {member.initials}
             </span>
             <img src={showPassAvatar} alt="" className="shp-avatar__photo" />
           </div>
@@ -72,9 +65,7 @@ export function ShowPass({ mode }: ShowPassProps) {
         Done
       </button>
 
-      <div className="shp-home-indicator" aria-hidden>
-        <span className="shp-home-indicator__pill" />
-      </div>
+      <IOSHomeIndicator variant="shp" />
     </div>
   );
 }

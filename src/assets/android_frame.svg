@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="920" viewBox="0 0 440 920" fill="none">
+  <defs>
+    <mask id="android-bezel-cutout">
+      <rect width="440" height="920" fill="white"/>
+      <rect x="14" y="18" width="412" height="892" rx="36" fill="black"/>
+    </mask>
+  </defs>
+  <rect width="440" height="920" rx="48" fill="#cac4d0" mask="url(#android-bezel-cutout)"/>
+  <circle cx="220" cy="36" r="5" fill="#8a848e"/>
+</svg>

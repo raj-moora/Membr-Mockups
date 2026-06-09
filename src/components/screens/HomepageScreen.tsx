@@ -8,19 +8,17 @@
  */
 
 import type { PreviewMode } from '../../types';
-import cellularConnection from '../../assets/cellular_connection.svg';
-import wifi from '../../assets/wifi.svg';
-import battery from '../../assets/battery.svg';
 import iphoneBevel from '../../assets/iphone-bevel.svg';
 import qrScan from '../../assets/qr_scan.svg';
+import {
+  HOMEPAGE_DAY_ITEMS,
+  HOMEPAGE_NEXT_CLASS,
+  HOMEPAGE_WAITING_LIST,
+  type HomeDayItem,
+} from './shared/mockData';
+import { IOSStatusBar } from './shared/IOSStatusBar';
 
-// ─── Day picker strip ──────────────────────────────────────────────────────────
-
-interface DayItemProps {
-  day: string;
-  date: string;
-  status: 'booked' | 'empty' | 'past';
-}
+type DayItemProps = HomeDayItem;
 
 function DayItem({ day, date, status }: DayItemProps) {
   return (
@@ -38,8 +36,6 @@ function DayItem({ day, date, status }: DayItemProps) {
     </div>
   );
 }
-
-// ─── Waiting list card ─────────────────────────────────────────────────────────
 
 interface WaitingCardProps {
   className: string;
@@ -64,107 +60,82 @@ function WaitingCard({ className: gymClass, time, message }: WaitingCardProps) {
   );
 }
 
-// ─── Main screen ──────────────────────────────────────────────────────────────
-
 interface HomepageScreenProps {
   mode: PreviewMode;
 }
 
 export function HomepageScreen({ mode }: HomepageScreenProps) {
+  const next = HOMEPAGE_NEXT_CLASS;
+
   return (
     <div className={`hp-screen${mode === 'dark' ? ' hp-screen--dark' : ''}`}>
-      {/* Gradient background (brand bg) */}
       <div className="hp-gradient" />
 
-      {/* Status bar */}
-      <div className="hp-status-bar">
-        <span className="hp-status-time">9:41</span>
-        <div className="hp-status-island" />
-        <div className="hp-status-icons">
-          <img src={cellularConnection} alt="" className="hp-status-icon" />
-          <img src={wifi} alt="" className="hp-status-icon" />
-          <img src={battery} alt="" className="hp-status-icon hp-status-icon--battery" />
-        </div>
-      </div>
+      <IOSStatusBar variant="hp" />
 
-      {/* Nav bar: title + avatar */}
       <div className="hp-nav">
         <h1 className="hp-nav__title">Home</h1>
         <div className="hp-nav__avatar">
-          <div
-            className="hp-avatar-img"
-            aria-label="Account avatar"
-          >
+          <div className="hp-avatar-img" aria-label="Account avatar">
             <span className="hp-avatar-fallback">A</span>
           </div>
         </div>
       </div>
 
-      {/* Scrollable content */}
       <div className="hp-content">
-
-        {/* ── Next class section ── */}
         <section className="hp-section">
           <h2 className="hp-section__heading">Your next class</h2>
           <div className="next-class-card">
             <div className="next-class-card__header">
               <div className="next-class-card__event-info">
-                <span className="next-class-card__morning">This morning</span>
-                <span className="next-class-card__time">7:30 am</span>
+                <span className="next-class-card__morning">{next.dayLabel}</span>
+                <span className="next-class-card__time">{next.time}</span>
               </div>
-              <span className="next-class-card__location">Fitness Studio A</span>
+              <span className="next-class-card__location">{next.location}</span>
             </div>
             <div className="next-class-card__divider" />
             <div className="next-class-card__body">
               <div className="next-class-card__class-info">
-                <span className="next-class-card__class-name">Spin Express</span>
-                <span className="next-class-card__instructor">with Jane Doe</span>
+                <span className="next-class-card__class-name">{next.className}</span>
+                <span className="next-class-card__instructor">with {next.instructor}</span>
               </div>
-              <div className="next-class-card__avatar-circle">JD</div>
+              <div className="next-class-card__avatar-circle">{next.instructorInitials}</div>
             </div>
             <div className="next-class-card__tag">
               <span className="next-class-card__tag-dot" />
-              Starts in 25 minutes
+              {next.startsInLabel}
             </div>
           </div>
         </section>
 
-        {/* ── Waiting list section ── */}
         <section className="hp-section">
           <h2 className="hp-section__heading">You're on the waiting list</h2>
           <div className="hp-card-stack">
-            <WaitingCard
-              className="Stretch"
-              time="10:00 am, Thursday 3 April"
-              message="You're next in line."
-            />
-            <WaitingCard
-              className="Weight lifting"
-              time="12:30 pm, Thursday 3 April"
-              message="You're in position 2."
-            />
+            {HOMEPAGE_WAITING_LIST.map((card) => (
+              <WaitingCard
+                key={`${card.className}-${card.time}`}
+                className={card.className}
+                time={card.time}
+                message={card.message}
+              />
+            ))}
           </div>
         </section>
 
-        {/* ── Browse classes section ── */}
         <section className="hp-section hp-section--browse">
           <h2 className="hp-section__heading">Browse classes</h2>
           <div className="day-strip">
-            <DayItem day="Today" date="3rd Apr" status="booked" />
-            <DayItem day="Fri" date="4th Apr" status="empty" />
-            <DayItem day="Sat" date="5th Apr" status="empty" />
-            <DayItem day="Sun" date="6th Apr" status="past" />
-            <DayItem day="Mon" date="7th Apr" status="empty" />
+            {HOMEPAGE_DAY_ITEMS.map((item) => (
+              <DayItem key={`${item.day}-${item.date}`} {...item} />
+            ))}
           </div>
           <div className="show-all-row">
             <span className="show-all-row__label">Show all classes</span>
             <span className="show-all-row__chevron">›</span>
           </div>
         </section>
-
       </div>
 
-      {/* ── Bevel + Show pass (fixed footer, outside scroll area) ── */}
       <div className="hp-pass-footer">
         <img src={iphoneBevel} alt="" className="hp-pass-bevel" />
         <div className="hp-pass-bar">

@@ -1,5 +1,15 @@
 import { toPng } from 'html-to-image';
 
+export function waitForPaint(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+  });
+}
+
+export function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function exportElementAsPng(
   element: HTMLElement,
   filename: string,

@@ -148,7 +148,22 @@ button {
   color: rgba(60, 60, 67, 0.6);
 }
 
+.control-section__subheading {
+  margin: 16px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(60, 60, 67, 0.6);
+}
+
 /* ── Preview mode toggle ── */
+.preview-toggles-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .preview-mode-toggle {
   display: flex;
   padding: 3px;
@@ -178,6 +193,37 @@ button {
   color: #1c1c1e;
   border-color: var(--brand-bg-light, #6923f4);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.preview-mode-toggle--icon {
+  width: fit-content;
+}
+
+.preview-mode-toggle--icon .preview-mode-toggle__btn {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.preview-mode-toggle__icon {
+  font-size: 20px;
+  line-height: 1;
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.preview-mode-toggle__icon--svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: block;
 }
 
 /* ── Color picker ── */
@@ -230,9 +276,62 @@ button {
   border-color: var(--brand-bg-light, #6923f4);
 }
 
+.control-text-input {
+  width: 100%;
+  height: 48px;
+  border: 1.5px solid #e0e0e6;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1c1c1e;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.control-text-input:focus {
+  border-color: var(--brand-bg-light, #6923f4);
+}
+
+.control-text-input::placeholder {
+  color: #8e8e93;
+}
+
 /* ── Palette accordion ── */
 .palette-accordion {
   gap: 0;
+}
+
+.palette-accordion__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.palette-accordion__header .palette-accordion__trigger {
+  flex: 1;
+  min-width: 0;
+}
+
+.palette-export-btn {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1c1c1e;
+  background: #ffffff;
+  border: 1px solid #e0e0e6;
+  border-radius: 6px;
+  transition: box-shadow 0.15s;
+}
+
+.palette-export-btn:hover:not(:disabled) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.palette-export-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .palette-accordion__trigger {
@@ -494,13 +593,18 @@ button {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Export all
+   Export actions
 ───────────────────────────────────────────────────────────────────────────── */
-.export-all-btn {
+.export-actions {
   position: fixed;
   top: 16px;
   right: 16px;
   z-index: 1000;
+  display: flex;
+  gap: 8px;
+}
+
+.export-all-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -552,11 +656,41 @@ button {
   padding: 48px 64px;
 }
 
+.preview-panel--android {
+  background: var(--md-background, #fef7ff);
+}
+
+.preview-panel__canvas {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  min-width: min-content;
+}
+
+.preview-platform {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  min-width: min-content;
+}
+
+.preview-platform__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(60, 60, 67, 0.55);
+}
+
 .preview-panel__inner {
   display: flex;
   flex-direction: row;
   gap: 48px;
   align-items: flex-start;
+  overflow-x: auto;
+  padding-bottom: 8px;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -625,6 +759,81 @@ button {
   height: 100%;
   pointer-events: none;
   z-index: 2;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Android frame
+───────────────────────────────────────────────────────────────────────────── */
+.android-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.android-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(60, 60, 67, 0.6);
+  letter-spacing: 0.2px;
+}
+
+.android-frame {
+  --android-frame-w: 440px;
+  --android-frame-h: 920px;
+  --android-screen-inset-x: 14px;
+  --android-screen-w: 412px;
+  --android-screen-h: 892px;
+  --android-content-w: 412px;
+  --android-content-h: 915px;
+  --android-content-scale: 1.00546;
+  width: var(--android-frame-w);
+  height: var(--android-frame-h);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.android-screen {
+  position: absolute;
+  left: var(--android-screen-inset-x);
+  top: 18px;
+  width: var(--android-screen-w);
+  height: var(--android-screen-h);
+  border-radius: 36px;
+  overflow: hidden;
+  z-index: 1;
+  background: #fef7ff;
+}
+
+.android-screen-content {
+  width: var(--android-content-w);
+  height: var(--android-content-h);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) scale(var(--android-content-scale));
+  transform-origin: top center;
+}
+
+.android-frame--splash .android-screen-content {
+  height: 892px;
+}
+
+.android-frame-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.android-frame-overlay__bezel {
+  fill: var(--md-outline-variant, #cac4d0);
+}
+
+.android-frame-overlay__camera {
+  fill: color-mix(in srgb, var(--md-outline-variant, #cac4d0) 35%, #000);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -722,7 +931,9 @@ button {
 }
 
 /* Status bar */
-.hp-status-bar {
+/* Shared iOS status bar layout (hp / sp share margins; shp / bk differ below). */
+.hp-status-bar,
+.sp-status-bar {
   position: relative;
   z-index: 5;
   display: flex;
@@ -734,16 +945,19 @@ button {
   height: 54px;
 }
 
+.hp-status-island,
+.sp-status-island,
+.shp-status-island,
+.bk-status-island {
+  width: 124px;
+  height: 10px;
+}
+
 .hp-status-time {
   font-size: 17px;
   font-weight: 590;
   color: var(--hp-label-primary);
   min-width: 50px;
-}
-
-.hp-status-island {
-  width: 124px;
-  height: 10px;
 }
 
 .hp-status-icons {
@@ -1250,8 +1464,6 @@ button {
 }
 
 .shp-status-island {
-  width: 124px;
-  height: 10px;
   flex-shrink: 0;
 }
 
@@ -1597,15 +1809,6 @@ button {
 
 /* Status bar — white on photo */
 .sp-status-bar {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 14px;
-  margin-right: 14px;
-  padding: 16px 16px 0;
-  height: 54px;
   flex-shrink: 0;
 }
 
@@ -1616,11 +1819,6 @@ button {
   letter-spacing: -0.43px;
   color: var(--sp-label-primary);
   min-width: 50px;
-}
-
-.sp-status-island {
-  width: 124px;
-  height: 10px;
 }
 
 .sp-status-icons {
@@ -1667,16 +1865,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.sp-logo__placeholder {
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-  color: rgba(255, 255, 255, 0.45);
-  border: 1.5px dashed rgba(255, 255, 255, 0.35);
-  border-radius: 8px;
-  padding: 12px 24px;
 }
 
 /* Bottom sign-in sheet */
@@ -1849,8 +2037,6 @@ button {
 }
 
 .bk-status-island {
-  width: 124px;
-  height: 10px;
   flex-shrink: 0;
 }
 

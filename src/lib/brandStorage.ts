@@ -1,10 +1,13 @@
 const KEYS = {
   primary: 'membr-brand-primary',
+  gymName: 'membr-gym-name',
   logo: 'membr-logo',
   logoScale: 'membr-logo-scale',
   splash: 'membr-splash',
   appIcon: 'membr-app-icon',
 } as const;
+
+export const DEFAULT_GYM_NAME = 'Xplor Gym';
 
 export const LOGO_SCALE_MIN = 0.5;
 export const LOGO_SCALE_MAX = 2;
@@ -55,6 +58,17 @@ export function loadStoredPrimary(defaultHex: string): string {
 
 export function saveStoredPrimary(hex: string): void {
   writeItem(KEYS.primary, hex);
+}
+
+export function loadStoredGymName(defaultName: string = DEFAULT_GYM_NAME): string {
+  const raw = readItem(KEYS.gymName);
+  if (!raw) return defaultName;
+  const trimmed = raw.trim();
+  return trimmed || defaultName;
+}
+
+export function saveStoredGymName(name: string): void {
+  writeItem(KEYS.gymName, name);
 }
 
 export function loadStoredLogo(): string | null {

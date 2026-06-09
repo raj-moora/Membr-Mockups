@@ -8,47 +8,34 @@
  * Brand tokens on .sp-screen: --sp-brand-bg, --sp-text-on-brand (swap via .sp-screen--dark).
  */
 
-import type { PreviewMode } from '../../types';
-import cellularConnection from '../../assets/cellular_connection.svg';
-import wifi from '../../assets/wifi.svg';
-import battery from '../../assets/battery.svg';
+import type { CSSProperties } from 'react';
+import type { ScreenAssetProps, ScreenBrandProps, ScreenModeProps } from '../../types';
+import { DEFAULT_GYM_NAME } from '../../lib/brandStorage';
+import { IOSHomeIndicator } from './shared/IOSHomeIndicator';
+import { IOSStatusBar } from './shared/IOSStatusBar';
 
-interface SplashScreenProps {
-  mode: PreviewMode;
-  hasLogo?: boolean;
-  logoScale?: number;
-  splashDataUrl?: string | null;
-}
+export interface SplashScreenProps extends ScreenModeProps, ScreenAssetProps, ScreenBrandProps {}
 
 export function SplashScreen({
   mode,
   hasLogo = false,
   logoScale = 1,
   splashDataUrl = null,
+  gymName = DEFAULT_GYM_NAME,
 }: SplashScreenProps) {
   return (
     <div className={`sp-screen${mode === 'dark' ? ' sp-screen--dark' : ''}`}>
       <div className="sp-bg" aria-hidden>
         {!splashDataUrl && <div className="sp-bg__fallback" />}
-        {splashDataUrl && (
-          <img src={splashDataUrl} alt="" className="sp-bg__photo" />
-        )}
+        {splashDataUrl && <img src={splashDataUrl} alt="" className="sp-bg__photo" />}
       </div>
 
-      <div className="sp-status-bar">
-        <span className="sp-status-time">9:41</span>
-        <div className="sp-status-island" />
-        <div className="sp-status-icons">
-          <img src={cellularConnection} alt="" className="sp-status-icon" />
-          <img src={wifi} alt="" className="sp-status-icon" />
-          <img src={battery} alt="" className="sp-status-icon sp-status-icon--battery" />
-        </div>
-      </div>
+      <IOSStatusBar variant="sp" />
 
       {hasLogo && (
         <div
           className="sp-logo-wrap"
-          style={{ '--sp-logo-scale': String(logoScale) } as React.CSSProperties}
+          style={{ '--sp-logo-scale': String(logoScale) } as CSSProperties}
         >
           <div
             className="sp-logo"
@@ -68,13 +55,9 @@ export function SplashScreen({
             <button type="button" className="sp-sign-in-btn">
               Sign in
             </button>
-            <p className="sp-sheet__footnote">
-              This app is for Xplor Gym members only.
-            </p>
+            <p className="sp-sheet__footnote">This app is for {gymName} members only.</p>
           </div>
-          <div className="sp-home-indicator" aria-hidden>
-            <span className="sp-home-indicator__pill" />
-          </div>
+          <IOSHomeIndicator variant="sp" />
         </div>
       </div>
     </div>
