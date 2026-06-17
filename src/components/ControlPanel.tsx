@@ -9,7 +9,7 @@ import {
   MATERIAL_PALETTE_CHIPS,
   type MaterialTheme,
 } from '../engine/materialThemeEngine';
-import { downloadAndroidThemeKt } from '../lib/exportAndroidTheme';
+import { downloadAndroidColorsKt } from '../lib/exportAndroidColors';
 import { downloadIosPaletteJson } from '../lib/exportIosPalette';
 import type { BrandPalette, Platform, PreviewMode } from '../types';
 import { PaletteChip } from './PaletteChip';
@@ -404,10 +404,10 @@ export function ControlPanel({
           <button
             type="button"
             className="palette-export-btn"
-            onClick={() => downloadAndroidThemeKt(materialTheme, gymName)}
-            aria-label="Export Android Material 3 theme as Theme.kt"
+            onClick={() => downloadAndroidColorsKt(materialTheme, gymName)}
+            aria-label="Export Android Material 3 colors as Colors.kt"
           >
-            Export Theme
+            Export Colors
           </button>
         </div>
         <div

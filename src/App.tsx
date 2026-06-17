@@ -3,7 +3,15 @@ import { flushSync } from 'react-dom';
 import { useBrandPalette } from './hooks/useBrandPalette';
 import { useAssetUploads } from './hooks/useAssetUploads';
 import { useGymName } from './hooks/useGymName';
+import { downloadAndroidColorsKt } from './lib/exportAndroidColors';
 import { delay, exportElementAsPng, waitForPaint } from './lib/exportCanvas';
+import { downloadIosPaletteJson } from './lib/exportIosPalette';
+import {
+  EXPORT_OPTIONS,
+  isScreenshotOption,
+  type ExportOptionId,
+  type ScreenshotExportOption,
+} from './lib/exportOptions';
 import {
   extractAccentColorFromDataUrl,
   pickBrandColorSource,
@@ -11,6 +19,7 @@ import {
 import { deriveMaterialTheme } from './engine/materialThemeEngine';
 import { applyMaterialThemeVars } from './engine/cssVars';
 import { ControlPanel } from './components/ControlPanel';
+import { ExportAllDialog } from './components/ExportAllDialog';
 import { IPhoneFrame } from './components/IPhoneFrame';
 import { AndroidFrame } from './components/AndroidFrame';
 import {
@@ -22,13 +31,6 @@ import {
 import type { Platform, PreviewMode } from './types';
 import './styles.css';
 import './android-screens.css';
-
-const EXPORT_ALL_VARIANTS: { mode: PreviewMode; platform: Platform; filename: string }[] = [
-  { mode: 'light', platform: 'ios', filename: 'membr-mockups-ios-light.png' },
-  { mode: 'dark', platform: 'ios', filename: 'membr-mockups-ios-dark.png' },
-  { mode: 'light', platform: 'android', filename: 'membr-mockups-android-light.png' },
-  { mode: 'dark', platform: 'android', filename: 'membr-mockups-android-dark.png' },
-];
 
 export default function App() {
   const { primaryHex, setPrimaryHex, palette } = useBrandPalette();
@@ -47,9 +49,10 @@ export default function App() {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('light');
   const [platform, setPlatform] = useState<Platform>('ios');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [exporting, setExporting] = useState(false);
   const [exportingAll, setExportingAll] = useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
   const materialTheme = useMemo(
     () => deriveMaterialTheme(primaryHex),
@@ -79,31 +82,25 @@ export default function App() {
     [platform],
   );
 
-  const isExportBusy = exporting || exportingAll;
-
-  const handleExport = useCallback(async () => {
+  const runSelectedExports = useCallback(async (selected: ExportOptionId[]) => {
     const node = canvasRef.current;
-    if (!node || isExportBusy) return;
-    setExporting(true);
-    try {
-      await exportElementAsPng(node, 'membr-mockups.png');
-    } catch (err) {
-      console.error('Export failed', err);
-    } finally {
-      setExporting(false);
-    }
-  }, [isExportBusy]);
+    if (!node || exportingAll || selected.length === 0) return;
 
-  const handleExportAll = useCallback(async () => {
-    const node = canvasRef.current;
-    if (!node || isExportBusy) return;
+    const selectedSet = new Set(selected);
+    const screenshotVariants = EXPORT_OPTIONS.filter(
+      (option): option is ScreenshotExportOption =>
+        selectedSet.has(option.id) && isScreenshotOption(option),
+    );
+    const exportIosPalette = selectedSet.has('ios-palette');
+    const exportAndroidColors = selectedSet.has('android-colors');
 
     const originalMode = previewMode;
     const originalPlatform = platform;
 
+    setExportDialogOpen(false);
     setExportingAll(true);
     try {
-      for (const variant of EXPORT_ALL_VARIANTS) {
+      for (const variant of screenshotVariants) {
         flushSync(() => {
           setPreviewMode(variant.mode);
           setPlatform(variant.platform);
@@ -112,16 +109,32 @@ export default function App() {
         await exportElementAsPng(node, variant.filename);
         await delay(250);
       }
+
+      if (exportIosPalette) {
+        downloadIosPaletteJson(palette, gymName);
+      }
+      if (exportAndroidColors) {
+        downloadAndroidColorsKt(materialTheme, gymName);
+      }
     } catch (err) {
       console.error('Export all failed', err);
     } finally {
-      flushSync(() => {
-        setPreviewMode(originalMode);
-        setPlatform(originalPlatform);
-      });
+      if (screenshotVariants.length > 0) {
+        flushSync(() => {
+          setPreviewMode(originalMode);
+          setPlatform(originalPlatform);
+        });
+      }
       setExportingAll(false);
     }
-  }, [isExportBusy, previewMode, platform]);
+  }, [
+    exportingAll,
+    previewMode,
+    platform,
+    palette,
+    gymName,
+    materialTheme,
+  ]);
 
   const runBrandColorExtraction = useCallback(async (dataUrl: string) => {
     try {
@@ -198,29 +211,30 @@ export default function App() {
         </button>
       </div>
       <div className="export-actions">
-        <button
-          type="button"
-          className="export-all-btn"
-          onClick={handleExport}
-          disabled={isExportBusy}
-          aria-busy={exporting}
-        >
-          {exporting && <span className="export-all-btn__spinner" aria-hidden />}
-          {exporting ? 'Exporting…' : 'Export'}
-        </button>
-        <button
-          type="button"
-          className="export-all-btn"
-          onClick={handleExportAll}
-          disabled={isExportBusy}
-          aria-busy={exportingAll}
-        >
-          {exportingAll && <span className="export-all-btn__spinner" aria-hidden />}
-          {exportingAll ? 'Exporting…' : 'Export all'}
-        </button>
+        <div className="export-all-menu" ref={exportMenuRef}>
+          <button
+            type="button"
+            className="export-all-btn"
+            onClick={() => setExportDialogOpen((open) => !open)}
+            disabled={exportingAll}
+            aria-busy={exportingAll}
+            aria-expanded={exportDialogOpen}
+            aria-haspopup="dialog"
+          >
+            {exportingAll && <span className="export-all-btn__spinner" aria-hidden />}
+            {exportingAll ? 'Exporting…' : 'Export all'}
+          </button>
+          <ExportAllDialog
+            open={exportDialogOpen}
+            exporting={exportingAll}
+            anchorRef={exportMenuRef}
+            onClose={() => setExportDialogOpen(false)}
+            onConfirm={runSelectedExports}
+          />
+        </div>
       </div>
       <main
-        className={`preview-panel${platform === 'android' ? ' preview-panel--android' : ''}`}
+        className="preview-panel"
       >
         <div className="preview-panel__canvas" ref={canvasRef}>
           <section className="preview-platform" aria-label={platformLabel}>

@@ -643,6 +643,111 @@ button {
   }
 }
 
+.export-all-menu {
+  position: relative;
+}
+
+.export-dialog {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(100vw - 32px, 320px);
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e0e0e6;
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.16);
+  z-index: 1;
+}
+
+.export-dialog__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c1c1e;
+}
+
+.export-dialog__subtitle {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #636366;
+}
+
+.export-dialog__options {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.export-dialog__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #1c1c1e;
+  cursor: pointer;
+}
+
+.export-dialog__checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--brand-bg-light, #6923f4);
+  cursor: pointer;
+}
+
+.export-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.export-dialog__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: opacity 0.15s, box-shadow 0.15s;
+}
+
+.export-dialog__btn--secondary {
+  color: #1c1c1e;
+  background: #ffffff;
+  border-color: #e0e0e6;
+}
+
+.export-dialog__btn--secondary:hover:not(:disabled) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.export-dialog__btn--primary {
+  color: #ffffff;
+  background: var(--brand-bg-light, #6923f4);
+  border-color: var(--brand-bg-light, #6923f4);
+}
+
+.export-dialog__btn--primary:hover:not(:disabled) {
+  box-shadow: 0 4px 14px rgba(105, 35, 244, 0.28);
+}
+
+.export-dialog__btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.export-dialog__btn--primary:disabled .export-all-btn__spinner {
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    Preview panel (right)
 ───────────────────────────────────────────────────────────────────────────── */
@@ -654,10 +759,6 @@ button {
   display: flex;
   align-items: flex-start;
   padding: 48px 64px;
-}
-
-.preview-panel--android {
-  background: var(--md-background, #fef7ff);
 }
 
 .preview-panel__canvas {
@@ -781,12 +882,12 @@ button {
 .android-frame {
   --android-frame-w: 440px;
   --android-frame-h: 920px;
-  --android-screen-inset-x: 14px;
-  --android-screen-w: 412px;
-  --android-screen-h: 892px;
+  --android-screen-inset-x: 16px;
+  --android-screen-w: 403px;
+  --android-screen-h: 888px;
   --android-content-w: 412px;
   --android-content-h: 915px;
-  --android-content-scale: 1.00546;
+  --android-content-scale: 0.97;
   width: var(--android-frame-w);
   height: var(--android-frame-h);
   position: relative;
@@ -796,10 +897,10 @@ button {
 .android-screen {
   position: absolute;
   left: var(--android-screen-inset-x);
-  top: 18px;
+  top: 16px;
   width: var(--android-screen-w);
   height: var(--android-screen-h);
-  border-radius: 36px;
+  border-radius: 44px;
   overflow: hidden;
   z-index: 1;
   background: #fef7ff;
@@ -816,7 +917,7 @@ button {
 }
 
 .android-frame--splash .android-screen-content {
-  height: 892px;
+  height: 888px;
 }
 
 .android-frame-overlay {
@@ -826,14 +927,6 @@ button {
   height: 100%;
   pointer-events: none;
   z-index: 2;
-}
-
-.android-frame-overlay__bezel {
-  fill: var(--md-outline-variant, #cac4d0);
-}
-
-.android-frame-overlay__camera {
-  fill: color-mix(in srgb, var(--md-outline-variant, #cac4d0) 35%, #000);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
