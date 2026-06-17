@@ -224,13 +224,14 @@ export default function App() {
             {exportingAll && <span className="export-all-btn__spinner" aria-hidden />}
             {exportingAll ? 'Exporting…' : 'Export all'}
           </button>
-          <ExportAllDialog
-            open={exportDialogOpen}
-            exporting={exportingAll}
-            anchorRef={exportMenuRef}
-            onClose={() => setExportDialogOpen(false)}
-            onConfirm={runSelectedExports}
-          />
+          {exportDialogOpen && (
+            <ExportAllDialog
+              exporting={exportingAll}
+              anchorRef={exportMenuRef}
+              onClose={() => setExportDialogOpen(false)}
+              onConfirm={runSelectedExports}
+            />
+          )}
         </div>
       </div>
       <main

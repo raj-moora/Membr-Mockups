@@ -6,7 +6,6 @@ import {
 } from '../lib/exportOptions';
 
 interface ExportAllDialogProps {
-  open: boolean;
   exporting: boolean;
   anchorRef: RefObject<HTMLElement | null>;
   onClose: () => void;
@@ -14,7 +13,6 @@ interface ExportAllDialogProps {
 }
 
 export function ExportAllDialog({
-  open,
   exporting,
   anchorRef,
   onClose,
@@ -25,14 +23,6 @@ export function ExportAllDialog({
   );
 
   useEffect(() => {
-    if (open) {
-      setSelected(new Set(DEFAULT_EXPORT_SELECTION));
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape' && !exporting) {
         onClose();
@@ -55,9 +45,7 @@ export function ExportAllDialog({
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handlePointerDown);
     };
-  }, [open, exporting, onClose, anchorRef]);
-
-  if (!open) return null;
+  }, [exporting, onClose, anchorRef]);
 
   function toggleOption(id: ExportOptionId) {
     setSelected((current) => {
